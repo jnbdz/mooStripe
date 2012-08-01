@@ -1,0 +1,93 @@
+<!DOCTYPE HtMl>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Mootools Stripe Payment Form</title>
+    <style>
+    .validation-advice {
+        color: red;
+    }
+    table {
+        border: 1px solid #000;
+        margin: 5px;
+    }
+    tr, td, th {
+        border: 1px solid #000;
+        padding: 3px;
+    }
+    </style>
+</head>
+<body>
+	<h1>Mootools Stripe Payment Form</h1>
+    <h2 style="color:red;">For this demo to work you need Stripe Publishable Key.</h2>
+	<span class="payment-errors"></span>
+	<form action="server.php" method="POST" id="payment-form">
+		<div class="form-row">
+			<label>Card Number</label>
+			<input type="text" size="20" data-validators="IsCreditCardNumber" autocomplete="off" id="card-number" disabled="disabled"/> <span>You can use any of the numbers found at the bottom of the page.</span>
+		</div>
+		<div class="form-row">
+			<label>CVC</label>
+			<input type="text" size="4" data-validators="IsCreditCardCVCNumber" autocomplete="off" id="card-cvc" disabled="disabled"/> <span>You can use any number higher than 2 digits.</span>
+		</div>
+		<div class="form-row">
+			<label>Expiration (MM/YYYY)</label>
+			<input type="text" size="2" data-validators="" id="card-expiry-month" disabled="disabled"/>
+			<span> / </span>
+			<input type="text" size="4" data-validators="IsCreditCardExpiry creditCardExpiryMonth:'card-expiry-month'" id="card-expiry-year" disabled="disabled"/>
+		</div>
+		<button type="submit" id="submit-button" disabled="disabled">Submit Payment</button>
+	</form>
+    <p><a href="https://stripe.com/docs/testing#cards">Credit card numbers from Stripe</a> to test out mooStripe.</p>
+    <p>
+    <table>
+        <tr><th>Number</th><th>Card type</th></tr>
+        <tr><td>4242424242424242</td><td>Visa</td></tr>
+        <tr><td>4012888888881881</td><td>Visa</td></tr>
+        <tr><td>5555555555554444</td><td>MasterCard</td></tr>
+        <tr><td>5105105105105100</td><td>MasterCard</td></tr>
+        <tr><td>378282246310005</td><td>American Express</td></tr>
+        <tr><td>371449635398431</td><td>American Express</td></tr>
+        <tr><td>6011111111111117</td><td>Discover</td></tr>
+        <tr><td>6011000990139424</td><td>Discover</td></tr>
+        <tr><td>30569309025904</td><td>Diner's Club</td></tr>
+        <tr><td>38520000023237</td><td>Diner's Club</td></tr>
+        <tr><td>3530111333300000</td><td>JCB</td></tr>
+        <tr><td>3566002020360505</td><td>JCB</td></tr>
+    </table>
+    </p>
+	<script src="https://ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools-yui-compressed.js"></script>
+    <script src="assets/js/mootools-more-1.4.0.1.js"></script>
+    <!--<script src="assets/js/stripe-debug.js"></script>-->
+    <script src="../Source/mooStripe.js"></script>
+    <script>
+        window.addEvent('domready', function(){
+            new mooStripe('payment-form', 'STRIPE_PUBLISHABLE_KEY', {
+                                                                number: 'card-number',
+                                                                cvc: 'card-cvc',
+                                                                exp_month: 'card-expiry-month',
+                                                                exp_year: 'card-expiry-year'
+                                                            }, {
+                                                                    onStripeLibLoaded: function() {
+                                                                        $$('input, button').set('disabled', '');
+                                                                    },
+                                                                    onStripeError: function() {
+                                                                        alert('Error!');
+                                                                    },
+                                                                    requestOptions: {
+                                                                        onSuccess: function() {
+                                                                            alert('Success! Your credit card informations have been sent to the server!');
+                                                                            $$('#payment-form input').set('value', '');
+                                                                        }
+                                                                    },
+                                                                    requestData: {
+                                                                        anotherToken: 'random'
+                                                                    },
+                                                                    submitButton: 'submit-button'
+                                                            });
+            new Form.Validator('payment-form');
+            new Form.Validator.Inline('payment-form');
+        });
+    </script>
+</body>
+</html>

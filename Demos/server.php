@@ -1,0 +1,1 @@
+<?= json_encode(array('message' => 'success', 'token' => $_POST['token'])); ?>
