@@ -10,7 +10,6 @@ license:
 
 requires:
  - core/1.4:   '*'
- - more:/Assets
  - more:/Form.Validator
 
 provides:
@@ -37,7 +36,7 @@ var mooStripe = new Class({
 
         this.form = document.id(element);
         this.stripeCreateTokenFields = stripeCreateTokenFields;
-        this.setOptions(options);
+        this.setOptions(options || {});
         
         this.requestOptions = this.options.requestOptions;
         this.requestData = this.options.requestData;
