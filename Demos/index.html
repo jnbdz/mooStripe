@@ -19,27 +19,26 @@
 </head>
 <body>
 	<h1>Mootools Stripe Payment Form</h1>
-    <h2 style="color:red;">For this demo to work you need Stripe Publishable Key.</h2>
+    <h2 style="color:red;">For this demo to work you need, Stripe publishable key. For more info, see <a href="https://stripe.com/docs/stripe.js">https://stripe.com/docs/stripe.js</a></h2>
 	<span class="payment-errors"></span>
 	<form action="server.php" method="POST" id="payment-form">
 		<div class="form-row">
 			<label>Card Number</label>
-			<input type="text" size="20" data-validators="IsCreditCardNumber" autocomplete="off" id="card-number" disabled="disabled"/> <span>You can use any of the numbers found at the bottom of the page.</span>
+			<input type="text" size="20" data-validators="IsCreditCardNumber" autocomplete="off" id="card-number"/> <span>You can use any of the numbers found at the bottom of the page.</span>
 		</div>
 		<div class="form-row">
 			<label>CVC</label>
-			<input type="text" size="4" data-validators="IsCreditCardCVCNumber" autocomplete="off" id="card-cvc" disabled="disabled"/> <span>You can use any number higher than 2 digits.</span>
+			<input type="text" size="4" data-validators="IsCreditCardCVCNumber" autocomplete="off" id="card-cvc"/> <span>You can use any number higher than 2 digits.</span>
 		</div>
 		<div class="form-row">
 			<label>Expiration (MM/YYYY)</label>
-			<input type="text" size="2" data-validators="" id="card-expiry-month" disabled="disabled"/>
+			<input type="text" size="2" data-validators="" id="card-expiry-month"/>
 			<span> / </span>
-			<input type="text" size="4" data-validators="IsCreditCardExpiry creditCardExpiryMonth:'card-expiry-month'" id="card-expiry-year" disabled="disabled"/>
+			<input type="text" size="4" data-validators="IsCreditCardExpiry creditCardExpiryMonth:'card-expiry-month'" id="card-expiry-year"/>
 		</div>
-		<button type="submit" id="submit-button" disabled="disabled">Submit Payment</button>
+		<button type="submit" id="submit-button">Submit Payment</button>
 	</form>
     <p><a href="https://stripe.com/docs/testing#cards">Credit card numbers from Stripe</a> to test out mooStripe.</p>
-    <p>
     <table>
         <tr><th>Number</th><th>Card type</th></tr>
         <tr><td>4242424242424242</td><td>Visa</td></tr>
@@ -55,10 +54,9 @@
         <tr><td>3530111333300000</td><td>JCB</td></tr>
         <tr><td>3566002020360505</td><td>JCB</td></tr>
     </table>
-    </p>
 	<script src="https://ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools-yui-compressed.js"></script>
     <script src="assets/js/mootools-more-1.4.0.1.js"></script>
-    <!--<script src="assets/js/stripe-debug.js"></script>-->
+    <script src="assets/js/stripe-debug.js"></script>
     <script src="../Source/mooStripe.js"></script>
     <script>
         window.addEvent('domready', function(){
@@ -68,9 +66,6 @@
                                                                 exp_month: 'card-expiry-month',
                                                                 exp_year: 'card-expiry-year'
                                                             }, {
-                                                                    onStripeLibLoaded: function() {
-                                                                        $$('input, button').set('disabled', '');
-                                                                    },
                                                                     onStripeError: function() {
                                                                         alert('Error!');
                                                                     },

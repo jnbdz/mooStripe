@@ -30,24 +30,13 @@ Do not use the name Stripe or mooStripe to name your variable.
 
 ###Options:
 
-* stripeLib - (string) This is the url of Stripe javascript library that is loaded with Assets class found in Mootools More. The default is: [https://js.stripe.com/v1/](https://js.stripe.com/v1/).
-* loadStripeLib - (bool) The default is true. This tells the class if loads Stripe javascript library.
 * setCreditCardFormValidators - (bool) The default is true. This indicates if the class should add new validators to [Mootools form validator](http://mootools.net/docs/more/Forms/Form.Validator).
 * requestJSON - (bool) The default is true. This is to determine if you will be using the [JSON request method](http://mootools.net/docs/core/Request/Request.JSON).
 * requestMethod (string) The default is post. You can get a full list of all the request methods from [Mootools docs](http://mootools.net/docs/core/Request/Request#Request:send-aliases).
 * requestData (object) The default is an empty object. The token is added by default to the request object later in the script. With this option you can send other information to the server at the same time of the token.
 * requestOptions - (object) The default is an empty object. [Reques class options](http://mootools.net/docs/core/Request/Request).
-* submitButton - (string) The default is null. 
 
 ###Events:
-
-####stripeLibLoaded
-
-* (function) Executes when the Stripe javascript framework is loaded.
-
-#####Signature:
-
-    onStripeLibLoaded()
 
 ####stripeError
 
@@ -64,7 +53,81 @@ Do not use the name Stripe or mooStripe to name your variable.
 #####Signature:
 
     onCreatedToken(status, response)
-    
+
+###Methods:
+
+####createToken
+
+* (function) To create a token with Stripe.
+
+#####Signature:
+
+    createToken(event)
+
+####responseHandler
+
+* (function) The callback for Stripe.createToken.
+
+#####Signature:
+
+    responseHandler(status, response)
+
+####setCreditCardFormValidators
+
+* (function) Called to set the custom form validators.
+
+#####Signature:
+
+    setCreditCardFormValidators()
+
+####validateKey
+
+* (function) For validating the publishable key.
+
+#####Signature:
+
+    validateKey(val)
+
+####validateCardNumber
+
+* (function) For validating credit card number.
+
+#####Signature:
+
+    validateCardNumber(cardNum)
+
+####validateExpiry
+
+* (function) For validating month and the year inserted in a input form.
+
+#####Signature:
+
+    validateExpiry(month, year)
+
+####validateCVC
+
+* (function) For validating the CVC number.
+
+#####Signature:
+
+    validateCVC(cvc)
+
+####cardType
+
+* (function) For detecting wich type of credit card is used.
+
+#####Signature:
+
+    cardType(type)
+
+####getToken
+
+* (function) For finding out whether or not the token has already been used. This will return an object with the same structure as the object returned from createToken. For more details go to Stripe [retrieving information about a token](https://stripe.com/docs/stripe.js#retrieving-information-about-a-token).
+
+#####Signature:
+
+    getToken(token, callback(status, response))
+
 ###Server side:
 
 The name of the variable is token for the token.

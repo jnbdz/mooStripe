@@ -26,14 +26,11 @@ var mooStripe = new Class({
                 onStripeLibLoaded: function(){},
                 onStripeError: function(response.error.message, status){},
                 onCreatedToken: function(status, response){},*/
-                stripeLib: 'https://js.stripe.com/v1/',
-                loadStripeLib: true,
                 setCreditCardFormValidators: true,
                 requestJSON: true,
                 requestMethod: 'post',
                 requestData: {},
-                requestOptions: {},
-                submitButton: null
+                requestOptions: {}
     },
 
     initialize: function(element, stripePublishableKey, stripeCreateTokenFields, options) {
@@ -46,33 +43,16 @@ var mooStripe = new Class({
         this.requestData = this.options.requestData;
         this.requestMethod = this.options.requestMethod;
 
-        this.submitButton = document.id(this.options.submitButton) ? document.id(this.options.submitButton) : $$('#' + element + ' button[type="submit"], #' + element + ' input[type="submit"]')[0];
+        this.submitButton = $$('#' + element + ' button[type="submit"], #' + element + ' input[type="submit"]')[0];
 
         if (!Object.keys(this.requestOptions).contains('url')) {
             Object.merge(this.requestOptions, {url: this.form.get('action')});
         }
 
-        if (!stripePublishableKey.length < 10 && !stripePublishableKey.test(/^pk_/)) {
-            throw new Error('No Stripe Publishable Key.');
-        }
+        this.validateKey(stripePublishableKey);
 
-        if (this.options.loadStripeLib) {
-        
-            Asset.javascript(this.options.stripeLib, {
-                            onLoad: function() {
-                                this.fireEvent('stripeLibLoaded');
-                                Stripe.setPublishableKey(stripePublishableKey);
-                                this.submitButton.addEvent('click', this.createToken.bind(this));
-                            }.bind(this)
-                        });
-        
-        } else {
-        
-            Stripe.setPublishableKey(stripePublishableKey);
-            this.fireEvent('stripeLibLoaded');
-            this.submitButton.addEvent('click', this.createToken.bind(this));
-            
-        }
+        Stripe.setPublishableKey(stripePublishableKey);
+        this.submitButton.addEvent('click', this.createToken.bind(this));
         
         if (this.options.setCreditCardFormValidators) {
             this.setCreditCardFormValidators();
@@ -146,6 +126,12 @@ var mooStripe = new Class({
     
     },
     
+    validateKey: function(key) {
+        if (!key.test(/^pk_/) || !(key.length > 10)) {
+            throw new Error('You need to use a Stripe publishable key.\nFor more info, see https://stripe.com/docs/stripe.js');
+        }
+    },
+    
     validateCardNumber: function(cardNum) {
         return Stripe.validateCardNumber(cardNum);
     },
@@ -162,10 +148,8 @@ var mooStripe = new Class({
         return Stripe.cardType(type);
     },
     
-    getToken: function(token, func) { // To test
-        Stripe.getToken(token, function(status, response){
-            return [status, response];
-        });
+    getToken: function(token, callback) {
+        return Stripe.getToken(token, callback(status, response));
     }
     
 });
