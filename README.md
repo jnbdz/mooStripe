@@ -12,7 +12,7 @@ You just need to call mooStripe() class.
 
 ###Syntax:
 
-    var mStripe = new mooStripe(form, stripePublishableKey, [options]);
+    var mStripe = new mooStripe(form, stripePublishableKey, stripeCreateTokenFields, [options]);
     
 ###WARNING:
 
@@ -128,7 +128,7 @@ Do not use the name Stripe or mooStripe to name your variable.
 
     getToken(token, callback(status, response))
 
-###InputValidators
+###InputValidators:
 
 ####Validator: IsCreditCardNumber
 
